@@ -29,7 +29,7 @@ jobs:
       matrix:
           # The windows-latest label currently points to windows-2019.
           # Available: windows-2016, windows-2019 and windows-2022
-          os: [windows-latest]
+          os: [windows-2022]
           # We run build checks for both Renewal and PRE-Renewal
           mode: ['PRE', 'RE']
 
@@ -46,3 +46,17 @@ jobs:
       - name: Build solution in Debug
         if: ${{ matrix.mode == 'RE' }}
         run: msbuild rAthena.sln -t:rebuild -property:Configuration=Debug /p:DefineConstants="BUILDBOT" /warnaserror
+
+      - name: Making artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rAthena_${{ matrix.os }}_${{ matrix.mode }}
+          path: |
+            D:\a\rathena\rathena\login-server.exe
+            D:\a\rathena\rathena\char-server.exe
+            D:\a\rathena\rathena\map-server.exe
+            D:\a\rathena\rathena\map-server-generator.exe
+            D:\a\rathena\rathena\csv2yaml.exe
+            D:\a\rathena\rathena\yaml2sql.exe
+            D:\a\rathena\rathena\web-server.exe
+            D:\a\rathena\rathena\yamlupgrade.exe
